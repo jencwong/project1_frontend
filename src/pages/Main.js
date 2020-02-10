@@ -4,6 +4,7 @@ class Main extends Component {
   state = {
     response: "",
     post: "",
+    slot: "",
     responseToPost: "",
     reservations: []
   };
@@ -49,12 +50,21 @@ class Main extends Component {
         <p>{this.state.response}</p>
         <form onSubmit={this.handleSubmit}>
           <p>
-            <strong>Post to Server:</strong>
+            <strong>New Reservation:</strong>
           </p>
           <input
             type="text"
+            id="username"
+            name="username"
             value={this.state.post}
             onChange={e => this.setState({ post: e.target.value })}
+          />
+          <input
+            type="date"
+            id="slot"
+            name="slot"
+            value={this.state.slot}
+            onChange={e => this.setState({ slot: e.target.value })}
           />
           <button type="submit">Submit</button>
         </form>
