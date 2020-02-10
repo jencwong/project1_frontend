@@ -2,28 +2,25 @@ import React, { Component } from "react";
 
 class Main extends Component {
   state = {
-    response: "",
+    reservation: [],
+    data: "",
     post: "",
     responseToPost: ""
   };
 
-  componentDidMount() {
-    this.callApi()
-      .then(res => this.setState({ response: res.express }))
-      .catch(err => console.log(err));
+  async componentDidMount() {
+    const results = await fetch("/reservations");
+    const body = await results.json();
+    console.log(body);
+    if (results.status !== 200) throw Error(body.message);
+    this.setState({
+      reservation: body.name
+    });
   }
-
-  callApi = async () => {
-    const response = await fetch("/reservations");
-    const body = await response.json();
-    if (response.status !== 200) throw Error(body.message);
-
-    return body;
-  };
 
   handleSubmit = async e => {
     e.preventDefault();
-    const response = await fetch("/reservation/new", {
+    const response = await fetch("/reservations/new", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -39,7 +36,17 @@ class Main extends Component {
     return (
       <div>
         <header></header>
-        <p>{this.state.response}</p>
+        <p>
+          {this.state.reservation.map(reservation => {
+            return (
+              <div>
+                <h2>
+                  {reservation.reservation.name}, {reservation.reservation.spot}
+                </h2>
+              </div>
+            );
+          })}
+        </p>
         <form onSubmit={this.handleSubmit}>
           <p>
             <strong>Post to Server:</strong>
