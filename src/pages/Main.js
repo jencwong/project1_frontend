@@ -2,21 +2,31 @@ import React, { Component } from "react";
 
 class Main extends Component {
   state = {
-    reservation: [],
-    data: "",
+    response: "",
     post: "",
-    responseToPost: ""
+    responseToPost: "",
+    reservations: []
   };
 
-  async componentDidMount() {
-    const results = await fetch("/reservations");
-    const body = await results.json();
-    console.log(body);
-    if (results.status !== 200) throw Error(body.message);
-    this.setState({
-      reservation: body.name
-    });
+  componentDidMount() {
+    this.callApi()
+      .then(res => this.setState({ response: res.express }))
+      .catch(err => console.log(err));
   }
+
+  callApi = async () => {
+    const response = await fetch("/reservations");
+    const body = await response.json();
+
+    console.log(body);
+    this.setState({
+      reservations: body
+    });
+
+    if (response.status !== 200) throw Error(body.message);
+
+    return body;
+  };
 
   handleSubmit = async e => {
     e.preventDefault();
@@ -36,17 +46,7 @@ class Main extends Component {
     return (
       <div>
         <header></header>
-        <p>
-          {this.state.reservation.map(reservation => {
-            return (
-              <div>
-                <h2>
-                  {reservation.reservation.name}, {reservation.reservation.spot}
-                </h2>
-              </div>
-            );
-          })}
-        </p>
+        <p>{this.state.response}</p>
         <form onSubmit={this.handleSubmit}>
           <p>
             <strong>Post to Server:</strong>
@@ -59,6 +59,16 @@ class Main extends Component {
           <button type="submit">Submit</button>
         </form>
         <p>{this.state.responseToPost}</p>
+
+        <ul>
+          {this.state.reservations.map(reservation => {
+            return (
+              <li>
+                Name: {reservation.name}, Slot: {reservation.slot}
+              </li>
+            );
+          })}
+        </ul>
       </div>
     );
   }
