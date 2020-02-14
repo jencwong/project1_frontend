@@ -3,7 +3,7 @@ import React, { Component } from "react";
 class Main extends Component {
   state = {
     response: "",
-    post: "",
+    name: "",
     slot: "",
     responseToPost: "",
     reservations: []
@@ -29,19 +29,22 @@ class Main extends Component {
     return body;
   };
 
-  handleSubmit = async e => {
-    e.preventDefault();
-    const response = await fetch("/reservations/new", {
+  async handleSubmit(name, slot) {
+    // event.preventDefault();
+    const response = await fetch("/reservations/create", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({ post: this.state.post })
+      body: JSON.stringify({
+        name,
+        slot
+      })
     });
     const body = await response.text();
 
     this.setState({ responseToPost: body });
-  };
+  }
 
   render() {
     return (
@@ -56,7 +59,7 @@ class Main extends Component {
             type="text"
             id="username"
             name="username"
-            value={this.state.post}
+            value={this.state.name}
             onChange={e => this.setState({ post: e.target.value })}
           />
           <input
