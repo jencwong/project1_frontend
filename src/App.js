@@ -19,6 +19,7 @@ const App = ({ classes }) => (
     <CssBaseline />
     <AppHeader />
     <main className={classes.main}>
+      <div>Vegan Burger</div>
       <Home />
     </main>
   </Fragment>
