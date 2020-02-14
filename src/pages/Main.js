@@ -9,6 +9,11 @@ class Main extends Component {
     reservations: []
   };
 
+  constructor(props) {
+    super(props);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
   componentDidMount() {
     this.callApi()
       .then(res => this.setState({ response: res.express }))
@@ -29,8 +34,11 @@ class Main extends Component {
     return body;
   };
 
-  async handleSubmit(name, slot) {
-    // event.preventDefault();
+  async handleSubmit(event) {
+    event.preventDefault();
+    const name = this.state.name;
+    const slot = this.state.slot;
+
     const response = await fetch("/reservations/create", {
       method: "POST",
       headers: {
@@ -60,7 +68,7 @@ class Main extends Component {
             id="username"
             name="username"
             value={this.state.name}
-            onChange={e => this.setState({ post: e.target.value })}
+            onChange={e => this.setState({ name: e.target.value })}
           />
           <input
             type="date"

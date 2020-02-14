@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 // import { Typography } from "@material-ui/core";
-import Parent from "./Parent.js";
+// import Parent from "./Parent.js";
 import Main from "./Main.js";
 
 class Home extends Component {
